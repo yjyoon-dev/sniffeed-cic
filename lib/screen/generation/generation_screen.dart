@@ -26,13 +26,12 @@ class _GeneratingScreenState extends State<GeneratingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("스니피드 콘텐츠 이미지 생성기"),
+        title: const Text("스니피드 컨텐츠 이미지 생성기"),
         actions: [
           IconButton(
               onPressed: () {
-                js.context.callMethod('open', [
-                  'https://github.com/yjyoon-dev/sniffeed-content-image-creator'
-                ]);
+                js.context.callMethod(
+                    'open', ['https://github.com/yjyoon-dev/sniffeed-cic']);
               },
               icon: const Icon(Icons.info))
         ],

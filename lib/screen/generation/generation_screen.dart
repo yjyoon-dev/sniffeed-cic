@@ -204,7 +204,10 @@ class _GeneratingScreenState extends State<GeneratingScreen> {
           sodiumInfo: SodiumInfo(
               per100g: csvRows[i][17].toString() + "mg",
               totalAvg: csvRows[i][18].toString() + "mg",
-              totalAvgSub: csvRows[i][19].toString() + "mg",
+              totalAvgSub: (csvRows[i][19].toString().startsWith('-')
+                      ? csvRows[i][19].toString()
+                      : '+' + csvRows[i][19].toString()) +
+                  "mg",
               contentDegree: csvRows[i][20].toString()));
       result.add(feedInfo);
     }

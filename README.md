@@ -1,16 +1,20 @@
-# sniffeed_content_image_creator
+# Sniffeed Content Image Creator
 
-A new Flutter project.
+![0](https://user-images.githubusercontent.com/72238126/160923888-053c92d2-440e-4c88-ad87-d636b4ce8159.png)
 
-## Getting Started
+**Sniffeed**를 위한 컨텐츠 이미지 자동 생성기입니다. `csv` 파일로부터 데이터를 읽어와 컨텐츠 이미지를 자동으로 생성합니다. 생성된 이미지는 `png` 파일 형태로 개별 및 일괄 다운로드가 가능합니다.
 
-This project is a starting point for a Flutter application.
+<br>
 
-A few resources to get you started if this is your first Flutter project:
+# 유의사항
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- 반드시 지정된 `csv` 파일 형식을 따라야합니다. `sample.csv` 를 참조해주세요.
+- 전체 이미지 다운로드 시 브라우저에서 *동시에 여러 파일 받기 설정을 허용*해주어야 정상적으로 작동합니다.
+- 기본적인 이미지 사이즈는 `1024x1024` 입니다. 브라우저를 확대/축소할 경우 사이즈가 변경될 수 있습니다.
+- 화면에 표시된 이미지를 그대로 인식하여 다운받는 형식으로, 지나친 확대/축소 후에 다운로드할 시 정상적인 이미지를 얻지 못할 수 있습니다.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<br>
+
+# 배포
+
+> http://3.39.142.202

@@ -4,7 +4,7 @@ RUN mkdir /app
 WORKDIR /app
 
 RUN mkdir ./build
-ADD ./build ./build/web
+ADD ./build/web ./build
 
 RUN rm /etc/nginx/conf.d/default.conf
 COPY ./nginx.conf /etc/nginx/conf.d

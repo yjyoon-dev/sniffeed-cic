@@ -7,7 +7,7 @@ import 'package:csv/csv.dart';
 import 'package:sniffeed_content_image_creator/model/feed_info.dart';
 import 'package:sniffeed_content_image_creator/screen/generation/feed_info_content.dart';
 import 'dart:html' as html;
-import 'package:universal_io/io.dart';
+import 'dart:js' as js;
 
 class GeneratingScreen extends StatefulWidget {
   const GeneratingScreen({Key? key}) : super(key: key);
@@ -27,6 +27,15 @@ class _GeneratingScreenState extends State<GeneratingScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("스니피드 콘텐츠 이미지 생성기"),
+        actions: [
+          IconButton(
+              onPressed: () {
+                js.context.callMethod('open', [
+                  'https://github.com/yjyoon-dev/sniffeed-content-image-creator'
+                ]);
+              },
+              icon: const Icon(Icons.info))
+        ],
       ),
       backgroundColor: const Color(0xfff2ede9),
       floatingActionButton: _feedInfos != null

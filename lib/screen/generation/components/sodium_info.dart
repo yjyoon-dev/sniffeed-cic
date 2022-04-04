@@ -16,7 +16,8 @@ class SodiumInfoComponent extends StatelessWidget {
           children: const [
             ColumnTitle(text: "나트륨 비교"),
             SizedBox(width: 12),
-            Text("※ 육식동물에게 나트륨은 중요한 체크사항이에요!", style: TextStyle(fontSize: 22))
+            Text("※ 육식동물에게 나트륨은 중요한 체크사항이에요!",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500))
           ],
         ),
         const CommonSpacer(),
@@ -34,10 +35,10 @@ class SodiumInfoComponent extends StatelessWidget {
               ]),
           padding: const EdgeInsets.all(6),
           child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 48),
+            padding: const EdgeInsets.fromLTRB(48, 22, 48, 14),
             decoration: BoxDecoration(
                 borderRadius: const BorderRadius.all(Radius.circular(24)),
-                border: Border.all(color: const Color(0xff573c11))),
+                border: Border.all(color: const Color(0xff573c11), width: 2.0)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -70,6 +71,7 @@ class SodiumInfoComponent extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     buildColumn("Na 함량의 정도"),
+                    const CommonSpacer(),
                     buildData(sodiumInfo.contentDegree),
                   ],
                 )
@@ -83,7 +85,7 @@ class SodiumInfoComponent extends StatelessWidget {
 
   Widget buildColumn(String text) {
     return Text(text,
-        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold));
+        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w500));
   }
 
   Widget buildData(String text) {
@@ -94,7 +96,7 @@ class SodiumInfoComponent extends StatelessWidget {
                 : (text.startsWith('+')
                     ? Colors.blue
                     : const Color(0xff573c11)),
-            fontSize: 42,
-            fontWeight: FontWeight.bold));
+            fontSize: 48,
+            fontWeight: FontWeight.w700));
   }
 }

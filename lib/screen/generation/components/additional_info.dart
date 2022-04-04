@@ -17,7 +17,8 @@ class AdditionalInfoComponent extends StatelessWidget {
         children: [
           ColumnTitle(text: additionalInfo.columnName),
           const CommonSpacer(),
-          Text(additionalInfo.columnData, style: const TextStyle(fontSize: 22))
+          Text(additionalInfo.columnData,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w400))
         ],
       ),
     );

@@ -21,11 +21,12 @@ class IngredientTableComponent extends StatelessWidget {
               rows: buildDataRow(),
               dataRowHeight: 32,
               dataRowColor: MaterialStateProperty.all(const Color(0xfff2ede9)),
-              dataTextStyle: const TextStyle(fontSize: 18),
+              dataTextStyle:
+                  const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               headingRowColor:
                   MaterialStateProperty.all(const Color(0xffd6c4b6)),
               headingTextStyle:
-                  const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
               headingRowHeight: 34,
               border: TableBorder.all(color: Colors.white, width: 2.0),
               dividerThickness: 0),

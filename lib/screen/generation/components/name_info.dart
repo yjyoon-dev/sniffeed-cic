@@ -12,9 +12,9 @@ class NameComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text(koreanName,
-          style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w900)),
+          style: const TextStyle(fontSize: 36, fontWeight: FontWeight.w700)),
       Text(englishName,
-          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w900)),
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w500)),
       const CommonSpacer()
     ]);
   }

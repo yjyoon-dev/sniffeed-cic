@@ -12,9 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Sniffeed Image Content Creator',
-      theme: ThemeData(
-        primarySwatch: Colors.brown,
-      ),
+      theme: ThemeData(primarySwatch: Colors.brown, fontFamily: 'Score_Dream'),
       home: const GeneratingScreen(),
     );
   }

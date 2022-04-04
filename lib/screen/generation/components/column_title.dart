@@ -8,8 +8,8 @@ class ColumnTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         color: const Color(0xffefe8de),
-        padding: const EdgeInsets.fromLTRB(8, 2, 8, 8),
+        padding: const EdgeInsets.all(8),
         child: Text("▶ $text",
-            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)));
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w500)));
   }
 }

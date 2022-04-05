@@ -1,16 +1,21 @@
+enum FeedType { carn, herb }
+enum CompareType { sodium, sugar }
+
 class FeedInfo {
   final String koreanName;
   final String englishName;
+  final FeedType type;
   final List<AdditionalInfo> additionalInfos;
   final IngredientTable ingredientTable;
-  final SodiumInfo sodiumInfo;
+  final CompareInfo compareInfo;
 
   FeedInfo(
       {required this.koreanName,
       required this.englishName,
+      required this.type,
       required this.additionalInfos,
       required this.ingredientTable,
-      required this.sodiumInfo});
+      required this.compareInfo});
 }
 
 class AdditionalInfo {
@@ -28,14 +33,16 @@ class IngredientTable {
   IngredientTable({required this.per100g, required this.totalAvg});
 }
 
-class SodiumInfo {
+class CompareInfo {
+  final CompareType type;
   final String per100g;
   final String totalAvg;
   final String totalAvgSub;
   final String contentDegree;
 
-  SodiumInfo(
-      {required this.per100g,
+  CompareInfo(
+      {required this.type,
+      required this.per100g,
       required this.totalAvg,
       required this.totalAvgSub,
       required this.contentDegree});

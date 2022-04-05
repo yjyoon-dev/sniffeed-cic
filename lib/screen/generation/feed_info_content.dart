@@ -3,7 +3,7 @@ import 'package:sniffeed_content_image_creator/model/feed_info.dart';
 import 'package:sniffeed_content_image_creator/screen/generation/components/additional_info.dart';
 import 'package:sniffeed_content_image_creator/screen/generation/components/name_info.dart';
 import 'package:sniffeed_content_image_creator/screen/generation/components/ingredient_table.dart';
-import 'package:sniffeed_content_image_creator/screen/generation/components/sodium_info.dart';
+import 'package:sniffeed_content_image_creator/screen/generation/components/compare_info.dart';
 
 class FeedInfoContent extends StatelessWidget {
   const FeedInfoContent({Key? key, required this.feedInfo}) : super(key: key);
@@ -36,7 +36,7 @@ class FeedInfoContent extends StatelessWidget {
                     additionalInfo: feedInfo.additionalInfos[2]),
                 IngredientTableComponent(
                     ingredientTable: feedInfo.ingredientTable),
-                SodiumInfoComponent(sodiumInfo: feedInfo.sodiumInfo)
+                SodiumInfoComponent(compareInfo: feedInfo.compareInfo)
               ]),
         ),
       ),

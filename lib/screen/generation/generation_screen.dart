@@ -175,40 +175,48 @@ class _GeneratingScreenState extends State<GeneratingScreen> {
     List<FeedInfo> result = [];
 
     for (int i = 1; i < csvRows.length; i++) {
+      var type =
+          csvRows[i][2].toString() == "육식" ? FeedType.carn : FeedType.herb;
+      var unit = (type == FeedType.carn ? "mg" : "g");
+
       FeedInfo feedInfo = FeedInfo(
           koreanName: csvRows[i][0].toString(),
           englishName: csvRows[i][1].toString(),
+          type: type,
           additionalInfos: [
             AdditionalInfo(
-                columnName: "추천 하루 급여량", columnData: csvRows[i][2].toString()),
+                columnName: "추천 하루 급여량", columnData: csvRows[i][3].toString()),
             AdditionalInfo(
-                columnName: "급여 시 참고 사항", columnData: csvRows[i][3].toString()),
+                columnName: "급여 시 참고 사항", columnData: csvRows[i][4].toString()),
             AdditionalInfo(
-                columnName: "일반적 특성", columnData: csvRows[i][4].toString())
+                columnName: "일반적 특성", columnData: csvRows[i][5].toString())
           ],
           ingredientTable: IngredientTable(per100g: [
-            csvRows[i][5].toString() + "kcal",
-            csvRows[i][6].toString() + "g",
+            csvRows[i][6].toString() + "kcal",
             csvRows[i][7].toString() + "g",
             csvRows[i][8].toString() + "g",
             csvRows[i][9].toString() + "g",
-            csvRows[i][10].toString() + "mg"
+            csvRows[i][10].toString() + "g",
+            csvRows[i][11].toString() + "mg"
           ], totalAvg: [
-            csvRows[i][11].toString() + "kcal",
-            csvRows[i][12].toString() + "g",
+            csvRows[i][12].toString() + "kcal",
             csvRows[i][13].toString() + "g",
             csvRows[i][14].toString() + "g",
             csvRows[i][15].toString() + "g",
-            csvRows[i][16].toString() + "mg"
+            csvRows[i][16].toString() + "g",
+            csvRows[i][17].toString() + "mg"
           ]),
-          sodiumInfo: SodiumInfo(
-              per100g: csvRows[i][17].toString() + "mg",
-              totalAvg: csvRows[i][18].toString() + "mg",
-              totalAvgSub: (csvRows[i][19].toString().startsWith('-')
-                      ? csvRows[i][19].toString()
-                      : '+' + csvRows[i][19].toString()) +
-                  "mg",
-              contentDegree: csvRows[i][20].toString()));
+          compareInfo: CompareInfo(
+              type: type == FeedType.carn
+                  ? CompareType.sodium
+                  : CompareType.sugar,
+              per100g: csvRows[i][18].toString() + unit,
+              totalAvg: csvRows[i][19].toString() + unit,
+              totalAvgSub: (csvRows[i][20].toString().startsWith('-')
+                      ? csvRows[i][20].toString()
+                      : '+' + csvRows[i][20].toString()) +
+                  unit,
+              contentDegree: csvRows[i][21].toString()));
       result.add(feedInfo);
     }
 

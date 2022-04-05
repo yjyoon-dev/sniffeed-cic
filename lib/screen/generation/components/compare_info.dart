@@ -4,20 +4,28 @@ import 'package:sniffeed_content_image_creator/screen/generation/components/colu
 import 'package:sniffeed_content_image_creator/screen/generation/components/common_spacer.dart';
 
 class SodiumInfoComponent extends StatelessWidget {
-  const SodiumInfoComponent({Key? key, required this.sodiumInfo})
+  const SodiumInfoComponent({Key? key, required this.compareInfo})
       : super(key: key);
 
-  final SodiumInfo sodiumInfo;
+  final CompareInfo compareInfo;
   @override
   Widget build(BuildContext context) {
+    var isSodium = compareInfo.type == CompareType.sodium;
+
     return Column(
       children: [
         Row(
-          children: const [
-            ColumnTitle(text: "나트륨 비교"),
-            SizedBox(width: 12),
-            Text("※ 육식동물에게 나트륨은 중요한 체크사항이에요!",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500))
+          children: [
+            ColumnTitle(text: (isSodium ? "나트륨" : "당분") + " 비교"),
+            const SizedBox(width: 12),
+            Text(
+                "※ " +
+                    (isSodium ? "육식" : "초식") +
+                    "동물에게 " +
+                    (isSodium ? "나트륨" : "당분") +
+                    "은 중요한 체크사항이에요!",
+                style:
+                    const TextStyle(fontSize: 24, fontWeight: FontWeight.w500))
           ],
         ),
         const CommonSpacer(),
@@ -46,33 +54,33 @@ class SodiumInfoComponent extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    buildColumn("100g 당 Na"),
+                    buildColumn("100g 당 " + (isSodium ? "Na" : "당분")),
                     const CommonSpacer(),
-                    buildData(sodiumInfo.per100g),
+                    buildData(compareInfo.per100g),
                   ],
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    buildColumn("전체 Na 평균"),
+                    buildColumn("전체 " + (isSodium ? "Na" : "당") + " 평균"),
                     const CommonSpacer(),
-                    buildData(sodiumInfo.totalAvg),
+                    buildData(compareInfo.totalAvg),
                   ],
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    buildColumn("전체 Na 평균 g 차이"),
+                    buildColumn("전체 " + (isSodium ? "Na" : "당") + " 평균 g 차이"),
                     const CommonSpacer(),
-                    buildData(sodiumInfo.totalAvgSub),
+                    buildData(compareInfo.totalAvgSub),
                   ],
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    buildColumn("Na 함량의 정도"),
+                    buildColumn((isSodium ? "Na" : "당분") + " 함량의 정도"),
                     const CommonSpacer(),
-                    buildData(sodiumInfo.contentDegree),
+                    buildData(compareInfo.contentDegree),
                   ],
                 )
               ],

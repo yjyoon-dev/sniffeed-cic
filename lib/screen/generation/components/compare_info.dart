@@ -104,7 +104,7 @@ class SodiumInfoComponent extends StatelessWidget {
                 : (text.startsWith('+')
                     ? Colors.blue
                     : const Color(0xff573c11)),
-            fontSize: 48,
+            fontSize: 36,
             fontWeight: FontWeight.w700));
   }
 }

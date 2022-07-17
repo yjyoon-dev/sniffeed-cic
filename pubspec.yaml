@@ -45,3 +45,5 @@ flutter:
           weight: 800 # Heavy
         - asset: assets/fonts/scoredream/SCDream9.otf
           weight: 900 # Black
+  assets:
+    - assets/images/

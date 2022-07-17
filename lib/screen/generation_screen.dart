@@ -4,8 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:csv/csv.dart';
-import 'package:sniffeed_content_image_creator/model/feed_info.dart';
-import 'package:sniffeed_content_image_creator/screen/generation/feed_info_content.dart';
+import 'package:sniffeed_content_image_creator/model/feed.dart';
+import 'package:sniffeed_content_image_creator/model/hay.dart';
+import 'package:sniffeed_content_image_creator/model/nutrient.dart';
+import 'package:sniffeed_content_image_creator/model/sample/feed_info.dart';
+import 'package:sniffeed_content_image_creator/screen/feed/feed_content.dart';
+import 'package:sniffeed_content_image_creator/screen/hay/hay_content.dart';
+import 'package:sniffeed_content_image_creator/screen/nutrient/nutrient_content.dart';
+import 'package:sniffeed_content_image_creator/screen/sample/generation/feed_info_content.dart';
 import 'dart:html' as html;
 import 'dart:js' as js;
 
@@ -18,7 +24,9 @@ class GeneratingScreen extends StatefulWidget {
 
 class _GeneratingScreenState extends State<GeneratingScreen> {
   int _index = 0;
-  List<FeedInfo>? _feedInfos;
+  String generationType = "사료";
+  List<String> generationTypeList = ["사료", "영양제", "건초", "샘플"];
+  var _items = null;
 
   ScreenshotController screenshotController = ScreenshotController();
 
@@ -37,20 +45,24 @@ class _GeneratingScreenState extends State<GeneratingScreen> {
         ],
       ),
       backgroundColor: const Color(0xfff2ede9),
-      floatingActionButton: _feedInfos != null
+      floatingActionButton: _items != null
           ? FloatingActionButton(
-              onPressed: importCsv,
-              child: const Icon(Icons.add),
+              onPressed: (() {
+                setState(() {
+                  _items = null;
+                });
+              }),
+              child: const Icon(Icons.refresh),
             )
           : null,
       body: Center(
-          child: _feedInfos != null
+          child: _items != null
               ? SingleChildScrollView(
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text("${_index + 1} / ${_feedInfos!.length}",
+                        Text("${_index + 1} / ${_items!.length}",
                             style: const TextStyle(color: Colors.grey)),
                         const SizedBox(height: 32),
                         SingleChildScrollView(
@@ -65,10 +77,25 @@ class _GeneratingScreenState extends State<GeneratingScreen> {
                                     child:
                                         const Icon(Icons.arrow_back_ios_new)),
                                 const SizedBox(width: 32),
-                                Screenshot(
-                                    child: FeedInfoContent(
-                                        feedInfo: _feedInfos![_index]),
-                                    controller: screenshotController),
+                                if (generationType == "사료") ...[
+                                  Screenshot(
+                                      child: FeedContent(feed: _items![_index]),
+                                      controller: screenshotController),
+                                ] else if (generationType == "건초") ...[
+                                  Screenshot(
+                                      child: HayContent(hay: _items![_index]),
+                                      controller: screenshotController)
+                                ] else if (generationType == "영양제") ...[
+                                  Screenshot(
+                                      child: NutrientContent(
+                                          nutrient: _items![_index]),
+                                      controller: screenshotController)
+                                ] else if (generationType == "샘플") ...[
+                                  Screenshot(
+                                      child: SampleFeedInfoContent(
+                                          feedInfo: _items![_index]),
+                                      controller: screenshotController)
+                                ],
                                 const SizedBox(width: 32),
                                 FloatingActionButton(
                                     onPressed: () {
@@ -117,20 +144,38 @@ class _GeneratingScreenState extends State<GeneratingScreen> {
                   ),
                   const SizedBox(width: 16),
                   const Text("CSV 파일 불러오기",
-                      style: TextStyle(color: Colors.grey))
+                      style: TextStyle(color: Colors.grey)),
+                  const SizedBox(width: 12),
+                  DropdownButton<String>(
+                    value: generationType,
+                    icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                    elevation: 16,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        generationType = newValue!;
+                      });
+                    },
+                    items: generationTypeList
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
                 ])),
     );
   }
 
   void setIndex(int index) {
-    if (index < 0 || index == _feedInfos!.length) return;
+    if (index < 0 || index == _items!.length) return;
     setState(() {
       _index = index;
     });
   }
 
   void downloadAllContentImages() async {
-    for (int i = 0; i < _feedInfos!.length; i++) {
+    for (int i = 0; i < _items!.length; i++) {
       await downloadContentImage(i);
       await Future.delayed(const Duration(seconds: 1));
     }
@@ -145,7 +190,7 @@ class _GeneratingScreenState extends State<GeneratingScreen> {
       final anchor = html.document.createElement('a') as html.AnchorElement
         ..href = url
         ..style.display = 'none'
-        ..download = '${_feedInfos![index].koreanName}.png';
+        ..download = '${_items![index].korean}.png';
       html.document.body!.children.add(anchor);
       anchor.click();
       html.Url.revokeObjectUrl(url);
@@ -154,7 +199,7 @@ class _GeneratingScreenState extends State<GeneratingScreen> {
 
   void importCsv() async {
     _index = 0;
-    _feedInfos = null;
+    _items = null;
 
     FilePickerResult? csvFile = await FilePicker.platform.pickFiles(
         allowedExtensions: ['csv'],
@@ -167,21 +212,100 @@ class _GeneratingScreenState extends State<GeneratingScreen> {
       List<List<dynamic>> rowsAsListOfValues =
           const CsvToListConverter().convert(bytes);
 
-      readCsv(rowsAsListOfValues);
+      switch (generationType) {
+        case "사료":
+          readFeedCsv(rowsAsListOfValues);
+          break;
+        case "건초":
+          readHayCsv(rowsAsListOfValues);
+          break;
+        case "영양제":
+          readNutrientCsv(rowsAsListOfValues);
+          break;
+        case "샘플":
+          readSampleCsv(rowsAsListOfValues);
+          break;
+      }
     }
   }
 
-  void readCsv(List<List<dynamic>> csvRows) {
-    List<FeedInfo> result = [];
+  void readFeedCsv(List<List<dynamic>> csvRows) {
+    List<Feed> result = [];
+
+    for (int i = 1; i < csvRows.length; i++) {
+      Feed feed = Feed(
+          korean: csvRows[i][0].toString(),
+          english: csvRows[i][1].toString(),
+          age: csvRows[i][2].toString(),
+          weight: csvRows[i][3].toString() + "g",
+          price: csvRows[i][4].toString() + "원",
+          pricePer: csvRows[i][5].toString() + "원",
+          amount: "-" + csvRows[i][6].toString().replaceAll('\n', '\n-'),
+          material: csvRows[i][7].toString(),
+          feature: "-" + csvRows[i][8].toString().replaceAll('\n', '\n-'),
+          ingredient: csvRows[i][9].toString());
+      result.add(feed);
+    }
+
+    setState(() {
+      _items = result;
+    });
+  }
+
+  void readHayCsv(List<List<dynamic>> csvRows) {
+    List<Hay> result = [];
+
+    for (int i = 1; i < csvRows.length; i++) {
+      Hay hay = Hay(
+          korean: csvRows[i][0].toString(),
+          english: csvRows[i][1].toString(),
+          weight: csvRows[i][2].toString() + "g",
+          price: csvRows[i][3].toString() + "원",
+          pricePer: csvRows[i][4].toString() + "원",
+          material: csvRows[i][5].toString(),
+          feature: "-" + csvRows[i][6].toString().replaceAll('\n', '\n-'));
+      result.add(hay);
+    }
+
+    setState(() {
+      _items = result;
+    });
+  }
+
+  void readNutrientCsv(List<List<dynamic>> csvRows) {
+    List<Nutrient> result = [];
+
+    for (int i = 1; i < csvRows.length; i++) {
+      Nutrient nutrient = Nutrient(
+          korean: csvRows[i][0].toString(),
+          english: csvRows[i][1].toString(),
+          weight: csvRows[i][2].toString() + "g",
+          count: csvRows[i][3].toString(),
+          price: csvRows[i][4].toString() + "원",
+          pricePer: csvRows[i][5].toString() + "원",
+          amount: "-" + csvRows[i][6].toString().replaceAll('\n', '\n-'),
+          material: csvRows[i][7].toString(),
+          feature: "-" + csvRows[i][8].toString().replaceAll('\n', '\n-'),
+          ingredient: csvRows[i][9].toString());
+      result.add(nutrient);
+    }
+
+    setState(() {
+      _items = result;
+    });
+  }
+
+  void readSampleCsv(List<List<dynamic>> csvRows) {
+    List<SampleFeedInfo> result = [];
 
     for (int i = 1; i < csvRows.length; i++) {
       var type =
           csvRows[i][2].toString() == "육식" ? FeedType.carn : FeedType.herb;
       var unit = (type == FeedType.carn ? "mg" : "g");
 
-      FeedInfo feedInfo = FeedInfo(
-          koreanName: csvRows[i][0].toString(),
-          englishName: csvRows[i][1].toString(),
+      SampleFeedInfo feedInfo = SampleFeedInfo(
+          korean: csvRows[i][0].toString(),
+          english: csvRows[i][1].toString(),
           type: type,
           additionalInfos: [
             AdditionalInfo(
@@ -221,7 +345,7 @@ class _GeneratingScreenState extends State<GeneratingScreen> {
     }
 
     setState(() {
-      _feedInfos = result;
+      _items = result;
     });
   }
 }

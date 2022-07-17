@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sniffeed_content_image_creator/screen/generation/generation_screen.dart';
+import 'package:sniffeed_content_image_creator/screen/generation_screen.dart';
 
 void main() {
   runApp(const MyApp());

@@ -1,17 +1,18 @@
 enum FeedType { carn, herb }
+
 enum CompareType { sodium, sugar }
 
-class FeedInfo {
-  final String koreanName;
-  final String englishName;
+class SampleFeedInfo {
+  final String korean;
+  final String english;
   final FeedType type;
   final List<AdditionalInfo> additionalInfos;
   final IngredientTable ingredientTable;
   final CompareInfo compareInfo;
 
-  FeedInfo(
-      {required this.koreanName,
-      required this.englishName,
+  SampleFeedInfo(
+      {required this.korean,
+      required this.english,
       required this.type,
       required this.additionalInfos,
       required this.ingredientTable,

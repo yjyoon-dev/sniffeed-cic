@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sniffeed_content_image_creator/screen/generation/components/common_spacer.dart';
+import 'package:sniffeed_content_image_creator/screen/sample/generation/components/common_spacer.dart';
 
 class NameComponent extends StatelessWidget {
   const NameComponent(
